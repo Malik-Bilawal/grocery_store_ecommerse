@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('carts', function (Blueprint $table) {
+            $table->id();
+
+            // For logged-in users
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+
+            // For guest users
+            $table->string('guest_token')->nullable()->index();
+
+            // Product info
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->string('size')->nullable();
+            $table->integer('quantity')->default(1);
+
+            // Price and total
+            $table->decimal('price', 10, 2);
+            $table->decimal('total', 10, 2);
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('carts');
+    }
+};
