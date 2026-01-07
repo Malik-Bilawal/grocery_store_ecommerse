@@ -95,7 +95,7 @@ public function placeOrder(Request $request)
         'phone'       => 'required|string',
         'address'     => 'required|string',
         'city'        => 'required|string',
-        'postal_code' => 'required|string',
+        'postal_code' => 'nullable|string',
     ]);
 
  

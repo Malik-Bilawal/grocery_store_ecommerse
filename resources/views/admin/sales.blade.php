@@ -167,6 +167,11 @@
                                             <span class="text-gray-600">Discount:</span>
                                             <span id="discountPercentage" class="font-medium text-primary"></span>
                                         </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Status</span>
+                                            <span id="saleStatus" class="font-medium text-primary"></span>
+                                        </div>
+
                                     </div>
                                 </div>
                                 
@@ -223,6 +228,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <div>
+    <label for="statusInput" class="block text-sm font-medium text-gray-700 mb-1">
+        Status
+    </label>
+    <select
+        id="statusInput"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+    >
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+    </select>
+</div>
+
                     
                     <div class="flex justify-end space-x-3 pt-4 border-t">
                         <button type="button" id="cancelBtn" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
@@ -264,6 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const startInput = document.getElementById("startDateInput");
     const endInput = document.getElementById("endDateInput");
     const discountInput = document.getElementById("discountInput");
+    const statusInput = document.getElementById("statusInput");
 
     // Display fields
     const activeSaleDisplay = document.getElementById("activeSaleDisplay");
@@ -273,13 +293,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const endDate = document.getElementById("endDate");
     const discountPercentage = document.getElementById("discountPercentage");
     const saleTimer = document.getElementById("saleTimer");
+    const saleStatus = document.getElementById("saleStatus");
 
     let editingSaleId = null;
     let saleData = null;
     let timerInterval = null;
 
 
-    // Fetch existing active sale when page loads
 fetch("{{ route('admin.sales.active') }}")
     .then(res => res.json())
     .then(data => {
@@ -329,13 +349,15 @@ fetch("{{ route('admin.sales.active') }}")
         starts_at: startInput.value,
         ends_at: endInput.value,
         discount_percent: discountInput.value,
+        status: statusInput.value,
+
     };
     console.log("Payload:", payload);
 
     const routes = {
     store: "{{ route('admin.sales.store') }}",
     update: "{{ url('admin/sales/update') }}",
-    delete: "{{ url('admin/sales/delete') }}"
+    delete: "{{ url('/admin/sales/delete') }}"
 };
 
     const url = editingSaleId
@@ -378,7 +400,8 @@ fetch("{{ route('admin.sales.active') }}")
         endSaleBtn.addEventListener("click", async () => {
             if (!confirm("Are you sure you want to end this sale?")) return;
             try {
-                const res = await fetch(`admin/sales/${saleData.id}`, {
+                const res = await fetch(`/admin/sales/delete/${saleData.id}`, {
+
                     method: "DELETE",
                     headers: {
                         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
@@ -406,8 +429,19 @@ fetch("{{ route('admin.sales.active') }}")
         saleDescription.textContent = sale.description || "No description";
         startDate.textContent = sale.starts_at || "-";
         endDate.textContent = sale.ends_at || "-";
+        saleStatus.textContent = sale.is_active
         discountPercentage.textContent = `${sale.discount_percent}%`;
 
+if(sale.is_active){
+saleStatus.classList.add('text-green');
+saleStatus.textContent="Active"
+}else{
+    saleStatus.classList.add('text-red');
+    saleStatus.textContent="InActive"
+
+
+
+}
         if (timerInterval) clearInterval(timerInterval);
         startCountdown(sale.ends_at);
     }

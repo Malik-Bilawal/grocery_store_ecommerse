@@ -104,6 +104,10 @@
             <label class="block text-sm font-medium text-gray-700">Price ($) *</label>
             <input type="number" name="price" class="w-full border rounded px-3 py-2" step="0.01" min="0" required>
         </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Discount Price ($) *</label>
+            <input type="number" name="discount_price" class="w-full border rounded px-3 py-2" step="0.01" min="0" required> 
+        </div>
 
         <div>
             <label class="block text-sm font-medium text-gray-700">Stock Quantity *</label>

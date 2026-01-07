@@ -90,14 +90,14 @@
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">ZIP / Postal Code</label>
-            <input type="text" name="postal_code" value="0000" required
+            <label class="block text-sm font-medium text-gray-700 mb-1">ZIP / Postal Code (Optional)</label>
+            <input type="text" name="postal_code" value="0000" 
                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
         </div>
 
         <div class="md:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-            <input type="tel" name="phone" required 
+            <input type="tel" name="phone"  
                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
         </div>
     </div>
@@ -363,7 +363,47 @@ $grandTotal = $subtotal - $discountAmount + $shipping + $tax;
     
 
 @push('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
+            const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    // Capture Laravel Validation Errors
+    @if ($errors->any())
+        Toast.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: "{{ $errors->first() }}" 
+        });
+    @endif
+
+    // Capture Manual "with('error', ...)" session messages
+    @if (session('error'))
+        Toast.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "{{ session('error') }}"
+        });
+    @endif
+
+    // Optional: Capture Success messages
+    @if (session('success'))
+        Toast.fire({
+            icon: 'success',
+            title: 'Success',
+            text: "{{ session('success') }}"
+        });
+    @endif
         document.querySelectorAll('.payment-radio').forEach(radio => {
             radio.addEventListener('change', function() {
                 document.querySelectorAll('.payment-label').forEach(label => {
@@ -418,6 +458,9 @@ $grandTotal = $subtotal - $discountAmount + $shipping + $tax;
             }
         });
         
+
+
+
 
     </script>
 @endpush

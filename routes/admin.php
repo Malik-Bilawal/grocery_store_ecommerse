@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SalesController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Order\OrderController;
 use App\Http\Controllers\Admin\UserManagementController;
@@ -15,6 +16,9 @@ use App\Http\Controllers\Admin\Categories\SubCategoryController;
 
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function() {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])->name('dashboard.chart');
 
     //CATGEORIES
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

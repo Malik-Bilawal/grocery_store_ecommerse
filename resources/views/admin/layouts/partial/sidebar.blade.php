@@ -15,7 +15,14 @@
   <nav class="flex-1 p-4 overflow-y-auto">
   <ul class="space-y-2 text-sm">
 
-
+  <li>
+    <a href="{{ route('admin.dashboard') }}"
+       class="flex items-center p-2 rounded-lg 
+       {{ request()->routeIs('admin.dashboard') ? 'bg-red-600 text-white' : 'hover:bg-gray-700' }}">
+        <i class="fas fa-key mr-3"></i>
+        Dashboard
+    </a>
+</li>
 <li>
     <a href="{{ route('admin.products.index') }}"
        class="flex items-center p-2 rounded-lg 

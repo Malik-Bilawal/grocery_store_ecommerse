@@ -1,44 +1,43 @@
 @php
 // --- SALE LOGIC ---
 $activeSale = null;
+
 try {
-$activeSale = \App\Models\Sale::where('is_active', 1)
-->where(function($q) {
-$q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
-  })
-  ->where(function($q) {
-  $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());
-  })
-  ->orderBy('discount_percent', 'desc')
-  ->first();
-  } catch (\Exception $e) {
-  $activeSale = null;
-  }
+    $activeSale = \App\Models\Sale::where('is_active', 1)
+        ->where(function($q) {
+            $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+        })
+        ->where(function($q) {
+            $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+        })
+        ->orderBy('discount_percent', 'desc')
+        ->first();
+} catch (\Exception $e) {
+    $activeSale = null;
+}
 
-  $basePrice = $product->price;
-  $finalPrice = $basePrice;
-  $isDiscounted = false;
-  $discountTag = '';
-  $saleName = '';
+$basePrice = $product->price;
+$finalPrice = $basePrice;
+$isDiscounted = false;
+$discountTag = '';
+$saleName = '';
 
-  if ($activeSale) {
-  $discountPercent = $activeSale->discount_percent;
-  $finalPrice = $basePrice - ($basePrice * ($discountPercent / 100));
-  $isDiscounted = true;
-  $discountTag = '-' . $discountPercent . '%';
-  $saleName = $activeSale->name;
-  } elseif ($product->offer_price && $product->offer_price > 0 && $product->offer_price < $basePrice) {
-    $finalPrice=$product->offer_price;
+if ($activeSale) {
+    $discountPercent = $activeSale->discount_percent;
+    $finalPrice = $basePrice - ($basePrice * ($discountPercent / 100));
+    $isDiscounted = true;
+    $discountTag = '-' . $discountPercent . '%';
+    $saleName = $activeSale->name;
+} elseif ($product->discount_price && $product->discount_price > 0 && $product->discount_price < $basePrice) {
+    $finalPrice = $product->discount_price;
     $isDiscounted = true;
     $percentOff = round((($basePrice - $finalPrice) / $basePrice) * 100);
     $discountTag = '-' . $percentOff . '%';
-    $saleName = 'Sale';
-    }
+    $saleName = 'OFFER';
+}
 
-    $rating = $product->rating ?? 0;
-    $fullStars = floor($rating);
-    $halfStar = ($rating - $fullStars) >= 0.5;
-    @endphp
+$rating = $product->rating ?? 0;
+@endphp
 
     <div class="group relative w-full bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg flex flex-col h-full">
 
@@ -111,15 +110,15 @@ $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
 <p class="text-gray-400 text-xs mb-2">1kg</p>
 
 <div class="mt-auto pt-2 border-t border-gray-100 flex items-end justify-between gap-2">
-
-    <div class="flex flex-col">
-        @if($isDiscounted)
+<div class="flex flex-col">
+    @if($isDiscounted)
         <span class="text-xs text-gray-400 line-through">Rs {{ number_format($basePrice, 0) }}</span>
-        @endif
-        <span class="text-lg font-bold text-gray-900">
-            Rs {{ number_format($finalPrice, 0) }}
-        </span>
-    </div>
+    @endif
+    
+    <span class="text-lg font-bold text-gray-900">
+        Rs {{ number_format($finalPrice, 0) }}
+    </span>
+</div>
 
     <div class="flex items-center gap-2">
     <!-- Buy Now Button -->

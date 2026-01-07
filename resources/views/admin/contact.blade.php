@@ -19,18 +19,19 @@
 
 @push("style")
 <style>
-  [x-cloak] { display: none !important; }
+    [x-cloak] {
+        display: none !important;
+    }
 </style>
 @endpush
 
 @section("content")
 
 
-<div 
-    x-data="{ sidebarOpen: false }" 
-    @close-sidebar.window="sidebarOpen = false" 
-    class="flex h-screen overflow-hidden"
->
+<div
+    x-data="{ sidebarOpen: false }"
+    @close-sidebar.window="sidebarOpen = false"
+    class="flex h-screen overflow-hidden">
 
     <!-- Mobile backdrop -->
     <div
@@ -38,16 +39,14 @@
         x-cloak
         x-transition.opacity
         class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
-        @click="sidebarOpen = false"
-    ></div>
+        @click="sidebarOpen = false"></div>
 
 
     <!-- Sidebar -->
     <aside
         class="fixed inset-y-0 left-0 z-30 w-64 bg-gray-900 text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0"
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        x-cloak
-    >
+        x-cloak>
         @include("admin.layouts.partial.sidebar")
     </aside>
 
@@ -60,8 +59,8 @@
                 <div class="flex items-center">
                     <!-- Mobile Hamburger -->
                     <button @click="sidebarOpen = !sidebarOpen"
-                            class="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none"
-                            aria-label="Open sidebar">
+                        class="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none"
+                        aria-label="Open sidebar">
                         <i class="fas fa-bars"></i>
                     </button>
 
@@ -75,7 +74,7 @@
                                     <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
                                 </li>
                                 <li class="flex items-center">
-                                    <span class="text-gray-700">Contact  Management</span>
+                                    <span class="text-gray-700">Contact Management</span>
                                 </li>
                             </ol>
                         </nav>
@@ -103,9 +102,9 @@
 
         <!-- Main -->
         <main class="flex-1 overflow-y-auto p-4 sm:p-6">
-            @yield('admin-content') 
-                        <!-- Messages Table -->
-                        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            @yield('admin-content')
+            <!-- Messages Table -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -167,9 +166,9 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          
-                                    
-                                    <form action="{{ route('admin.contact.destroy', $message->id) }}"  class="inline">
+
+
+                                    <form action="{{ route('admin.contact.destroy', $message->id) }}" class="inline">
                                         @method('delete')
                                         @csrf
                                         <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this message?')" title="Delete Message">
@@ -182,7 +181,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Pagination -->
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                     <div class="flex-1 flex justify-between sm:hidden">
@@ -191,10 +190,10 @@
                     </div>
                     <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                         <div>
-                        
+
                         </div>
                         <div>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -213,7 +212,7 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            
+
             <div class="mt-4 space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -226,19 +225,19 @@
                         <p class="mt-1 text-sm text-gray-900" id="modalDate"></p>
                     </div>
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Subject</label>
                     <p class="mt-1 text-sm text-gray-900" id="modalSubject"></p>
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Message</label>
                     <div class="mt-1 p-3 bg-gray-50 rounded-md">
                         <p class="text-sm text-gray-700 whitespace-pre-wrap" id="modalMessage"></p>
                     </div>
                 </div>
-                
+
                 <div class="flex justify-end space-x-3 pt-4 border-t">
                     <button id="closeModalBtn" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                         Close
@@ -247,7 +246,7 @@
             </div>
         </div>
 
-</main>
+        </main>
 
     </div>
 </div>
@@ -258,7 +257,7 @@
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
 <script>
-   const messageModal = document.getElementById('messageModal');
+    const messageModal = document.getElementById('messageModal');
     const closeMessageModal = document.getElementById('closeMessageModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
@@ -268,7 +267,7 @@
         document.getElementById('modalDate').textContent = message.date;
         document.getElementById('modalSubject').textContent = message.subject;
         document.getElementById('modalMessage').textContent = message.fullMessage;
-        
+
         messageModal.classList.remove('hidden');
     }
 

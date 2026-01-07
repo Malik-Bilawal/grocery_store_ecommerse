@@ -47,7 +47,7 @@ class UserLoginController extends Controller
     
             if ($user->role === 'admin') {
                 Log::info('Redirecting admin to admin.categories.index');
-                return redirect()->route('admin.categories.index');
+                return redirect()->route('admin.dashboard');
             }
     
             
