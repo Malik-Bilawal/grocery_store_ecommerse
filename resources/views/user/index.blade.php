@@ -245,8 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="carousel-panel rounded-2xl overflow-hidden shadow-lg flex flex-col items-center">
 
                             <!-- Card Image -->
-                            <div class="relative w-full h-full cursor-pointer"
-                                onclick="window.location='{{ route('product', ['category' => $category->slug]) }}'">
+                            <div class="relative w-full h-full cursor-pointer" onclick="applyCategoryAndRedirect({{ $category->id }})">
 
                                 @if(!empty($category->image))
                                 <img src="{{ asset('storage/app/public/' . $category->image) }}"
