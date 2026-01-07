@@ -1291,10 +1291,8 @@
                     </div>
 <<<<<<< HEAD
                 </div> --}}
-=======
+
                 </div>
-                
->>>>>>> f3d9f54 (updateddd)
 
                 <div id="products-container" class="products-grid">
                     @include('user.components.product-cards', ['products' => $products])
